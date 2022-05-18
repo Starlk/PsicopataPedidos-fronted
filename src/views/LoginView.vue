@@ -17,12 +17,12 @@
             @handleChange="handleChange"
           />
 
-          <RouterLink to="/Users" class="">
+         
             <input
               type="submit"
               value="Ingresar"
-              class="btn btn-outline-success"
-          /></RouterLink>
+              class="btn btn-outline-success"/>
+     
         </form>
       </section>
     </section>

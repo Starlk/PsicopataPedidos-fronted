@@ -3,8 +3,8 @@
     <h1 class="text-white text-center">Usuarios</h1>
   </header>
   <section class="container mt-3">
-    <div class="row justify-content-center">
-      <div class="col-12 col-lg-4 align-self-center mb-5">
+    <div class="row justify-content-center  align-items-start">
+      <div class="col-12 col-lg-4 align-self-start mb-5">
         <form class="p-4 shadow rounded" @submit="handleForm">
           <h1 class="fs-3 text-center mb-3">
             {{ isUpdate ? "Update user" : "Create user" }}
@@ -13,7 +13,6 @@
             Group-label="name"
             Group-Id="name"
             @handleChange="handleChange"
-        
           />
           <GroupForm
             Group-label="lastName"
@@ -43,20 +42,22 @@
               class="btn btn-outline-success text-center shadow btnForm"
               :value="isUpdate ? 'Update user' : 'Create user'"
             />
-            <p v-if="ErrorForm" class="text-danger text-center mt-3">Completed the form  before send it</p>
+            <p v-if="ErrorForm" class="text-danger text-center mt-3">
+              Completed the form before send it
+            </p>
           </div>
         </form>
       </div>
 
       <div class="col-12 col-lg-7">
-        <table class="table table-hover table-secondary table-striped">
+        <table class="table table-striped">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">name</th>
-              <th scope="col">LastName</th>
-              <th scope="col">email</th>
-              <th scope="col">wallet</th>
+              <th scope="col text-center">#</th>
+              <th scope="col text-center">name</th>
+              <th scope="col text-center">LastName</th>
+              <th scope="col text-center">email</th>
+              <th scope="col text-center">wallet</th>
             </tr>
           </thead>
           <tbody v-for="(user, index) in response">
@@ -67,12 +68,12 @@
               <td>{{ user.email }}</td>
               <td>{{ user.wallet }}</td>
               <td>
-                <button class="btn btn-success" @click="OnFormUpdate(user)">
+                <button class="btn btn-outline-success mb-2" @click="OnFormUpdate(user)"> 
                   Update
-                </button>
-                <button class="btn btn-danger" @click="handleClick(user.id)">
+                 </button> 
+                 <button class="btn btn-outline-danger" @click="handleClick(user.id)"> 
                   Delete
-                </button>
+                 </button> 
               </td>
             </tr>
           </tbody>
@@ -88,6 +89,8 @@ import GroupForm from "../components/GroupForm.vue";
 import { GetRequest, SendRequest, DeleteRequest } from "../helper/HttpHelper";
 import { userPath } from "../constant/PathAPI";
 import ValidateForm from "../helper/ValidateFormHelper";
+import { AlertMessage } from "../helper/Alerts";
+
 const initialForm = {
   name: "",
   lastName: "",
@@ -121,7 +124,6 @@ export default {
         console.log(err);
       }
       this.GetAllUsers();
-   
     },
     handleForm(e) {
       e.preventDefault();
@@ -143,7 +145,11 @@ export default {
          console.error(err);
        }
        this.GetAllUsers();
-    
+
+     this.$swal({
+       title:"Usuario guardado",
+       icon:"success"
+     });
     },
     async handleUpdate() {
       try {
@@ -165,7 +171,6 @@ export default {
       this.isUpdate = false;
     },
     handleChange(name, value) {
-     
       this.form = { ...this.form, [name]: value };
     },
   },
@@ -182,4 +187,13 @@ export default {
   display: block;
   margin: 0 auto;
 }
+
+.icon__trash{
+  widows: 20px;
+  height: 20px;
+  margin-bottom: 10px;
+  
+}
+
+
 </style>
