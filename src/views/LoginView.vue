@@ -74,6 +74,7 @@ export default {
   background-color: rgba(62, 62, 62, 0.702);
   height: 100vh;
   justify-content: left;
+
 }
 .main {
   background-color: white;
