@@ -134,17 +134,16 @@ export default {
           return;
         }
         this.ErrorForm = false;
-      // try {
-      //   await SendRequest(userPath, {
-      //     ...this.form,
-      //     ["isAdmin"]: "false",
-      //   });
-      // } catch (err) {
-      //   console.error(err);
-      // }
-      // this.GetAllUsers();
-      
-   
+       try {
+         await SendRequest(userPath, {
+           ...this.form,
+           ["isAdmin"]: "false",
+         });
+       } catch (err) {
+         console.error(err);
+       }
+       this.GetAllUsers();
+    
     },
     async handleUpdate() {
       try {
