@@ -13,28 +13,37 @@
             Group-label="name"
             Group-Id="name"
             @handleChange="handleChange"
+             Input-Type="text"
+            :input="form.name"
           />
           <GroupForm
             Group-label="lastName"
             Group-Id="lastName"
             @handleChange="handleChange"
+             Input-Type="text"
+            :input="form.lastName"
           />
           <GroupForm
             Group-label="email"
             Group-Id="email"
             @handleChange="handleChange"
+             Input-Type="text"
+            :input="form.email"
           />
 
           <GroupForm
             Group-label="password"
             Group-Id="password"
             @handleChange="handleChange"
+             Input-Type="text"
+            :input="form.password"
           />
           <GroupForm
             Group-label="wallet"
             Group-Id="wallet"
             @handleChange="handleChange"
             Input-Type="number"
+            :input="form.wallet"
           />
           <div class="col col-12 justify-content-center">
             <input

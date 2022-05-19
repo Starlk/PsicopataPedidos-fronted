@@ -5,14 +5,15 @@
       id={{GroupId}}
       @input="(event) => HooksInputEvent(event.target.value)"
       :type="InputType ? InputType : 'text'"
-  
       class="form-control"
+      :value="input"
     />
   </div>
 </template>
  
 <script>
 import { computed } from "@vue/reactivity";
+import { stringifyQuery } from "vue-router";
 export default {
   data(){
     return{
@@ -23,6 +24,7 @@ export default {
     GroupLabel: String,
     GroupId: String,
     InputType:String,
+    input:String
   },
 
   methods: {

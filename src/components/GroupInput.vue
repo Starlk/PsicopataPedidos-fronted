@@ -1,7 +1,7 @@
 <template>    
         <label  class="input_label">{{GroupTitle}}</label>
      <div class="input__group">
-        <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type"  />
+        <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type" :value="input"  />
     </div>
 </template>
 
@@ -12,7 +12,8 @@ export default{
         GroupLabel:String,
         GroupId:String,
         GroupTitle:String,
-        type:String
+        type:String,
+        input:String
       
     },
 
