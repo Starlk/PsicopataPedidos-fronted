@@ -1,33 +1,43 @@
 <template class="template__login">
+<h1 class="title">By: Starlk</h1>
   <div class="body">
     <section class="main">
       <section class="login">
-        <h1 class="login__title">Log In</h1>
+        <h1 class="login__title">Welcome Back</h1>
+        <p>Welcome back! please enter your details</p>
         <form @submit="handleSubmit">
           <GroupInput
-            Group-label="email"
+            Group-label="Enter you email"
             Group-Id="email"
             @handleChange="handleChange"
-            ClassName="login__group"
+            Group-Title="Email"
+            type="text"
+            
+          
           />
           <GroupInput
-            Group-label="password"
+            Group-label="******"
             Group-Id="password"
-            ClassName="login__group"
             @handleChange="handleChange"
+            Group-Title="password"
+            type="password"
           />
 
           <input
             type="submit"
             value="Ingresar"
-            class="btn btn-outline-success"
+            class="login__btn"
            
           />
         </form>
-        <p v-if="ErrorUser" class="text-danger text-center mt-3">Usuario no existe</p>
-        <p v-if="ErrorForm" class="text-danger text-center mt-3">Debe completar los formularios, para enviar</p>
+        <h2 class="login__register">Don't have an account ? <span>Sign Up</span></h2>
+        <p v-if="ErrorUser" class="text-danger text-center mt-3 absolute">Usuario no existe</p>
+        <p v-if="ErrorForm" class="text-danger text-center mt-3 absolute">Debe completar los formularios, para enviar</p>
+
+        
       </section>
     </section>
+      <img src="../assets/security.svg" alt="login" class="body__background"/>
   </div>
 </template>
 
@@ -87,9 +97,15 @@ export default {
 </script>
 
 <style>
+.title{
+  position: absolute;
+  font-size: .9rem;
+  margin-left: 2em;
+  top: 10px;
+}
 .body {
   display: flex;
-  background-color: rgba(62, 62, 62, 0.702);
+  background-color: #E8F9FD;
   height: 100vh;
   justify-content: left;
 }
@@ -102,13 +118,19 @@ export default {
   align-items: center;
   display: flex;
   justify-content: center;
-  box-shadow: 2px 0px 9px 1px rgb(0, 0, 0, 0.5);
+box-shadow: 34px 10px 41px -21px rgba(0,0,0,0.39);
 }
 .login__title {
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: left;
+  margin-bottom: .5rem;
   font-size: 2.5rem;
   color: black;
+}
+.login__title + p{
+  opacity: .5;
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 .login__submit {
@@ -121,5 +143,45 @@ export default {
   border-width: 2px;
   color: #92b4ec;
   box-shadow: 10px 7px 11px -7px rgba(92, 77, 77, 0.75);
+}
+.absolute{
+  position: absolute;
+}
+
+.login__btn{
+  background-color: #0AA1DD;
+  border-radius: 5px;
+  border-style: none;
+  padding: .5em 1em;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  color: rgb(248, 238, 238);
+box-shadow: -11px 30px 45px -22px rgba(0,0,0,0.62);
+margin-bottom: 20px;
+}
+
+.login__register{
+  font-size: 1rem;
+  opacity: .6;
+  text-align: center;
+}
+.login__register span{
+  color: #0AA1DD;
+}
+.login__register span:hover{
+  cursor: pointer;
+}
+.body__background{
+  max-width: 45%;
+  text-align: center;
+}
+
+@media screen and (max-width: 720px) {
+  .main{
+    width: 100%;
+    height: 100vh;
+  }
+ 
 }
 </style>

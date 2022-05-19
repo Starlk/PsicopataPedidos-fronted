@@ -1,7 +1,7 @@
-<template>
+<template>    
+        <label for={{GroupId}} class="input_label">{{GroupTitle}}</label>
      <div class="input__group">
-        <label for={{GroupLabel}}>{{GroupLabel}}</label>
-        <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"   />
+        <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type"  />
     </div>
 </template>
 
@@ -11,7 +11,9 @@ export default{
     props:{
         GroupLabel:String,
         GroupId:String,
-        ClassName:String
+        GroupTitle:String,
+        type:String
+      
     },
 
     methods:{
@@ -24,25 +26,24 @@ export default{
 
 
 <style>
-    .input__group {
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
+.input__group {
+ display: flex;
+ padding: .5em;
+ border: solid 1px rgb(141, 140, 140);
+ margin-bottom: 1em;
+ border-radius: 5px;
 }
-.input__group > label {
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-}
+
 .input__group > input {
-  border-style: none;
-  border-bottom-style: solid;
-  border-width: 2;
-  padding-left: 2em;
-  padding-right: 2em;
+  border: none;
+  background-color: transparent;
 }
 .input__group > input:focus {
-  outline: none;
+ outline: none;
 }
+.input_label{
+  margin-bottom: 7px;
+   
+}
+
 </style>
