@@ -23,7 +23,16 @@
             :input="form.password"
           />
 
-          <input type="submit" value="Ingresar" class="login__btn" />
+          <input type="submit" value="Sign in" class="login__btn" />
+          <section class="spinner">
+            <div
+              class="spinner-border loading--absolute"
+              role="status"
+              v-if="loading"
+            >
+              <span class="sr-only"></span>
+            </div>
+          </section>
         </form>
         <RouterLink to="/Register"></RouterLink>
         <h2 class="login__register">
@@ -63,6 +72,7 @@ export default {
       ErrorUser: false,
       ErrorForm: false,
       toke: "",
+      loading: false,
     };
   },
   methods: {
@@ -74,6 +84,7 @@ export default {
       }
       this.ErrorUser = false;
       this.ErrorForm = false;
+      this.loading = true;
       let options = {
         method: "POST",
         headers: {
@@ -86,6 +97,7 @@ export default {
         const datos = await GetToken(`${userPath}/Login`, options);
         if (datos) {
           setItemToLocalStorage(datos);
+          this.loading = false;
           this.login();
         }
       } catch (err) {
@@ -107,6 +119,7 @@ export default {
 </script>
 
 <style>
+@import "../styles/loading.css";
 .title {
   position: absolute;
   font-size: 0.9rem;
@@ -192,5 +205,11 @@ export default {
     width: 100%;
     height: 100vh;
   }
+}
+
+
+.loading--absolute {
+  position: absolute;
+  margin-top: 50px;
 }
 </style>

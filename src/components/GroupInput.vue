@@ -38,6 +38,7 @@ export default{
 .input__group > input {
   border: none;
   background-color: transparent;
+  width: 100%;
 }
 .input__group > input:focus {
  outline: none;

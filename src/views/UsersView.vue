@@ -10,21 +10,21 @@
             {{ isUpdate ? "Update user" : "Create user" }}
           </h1>
           <GroupForm
-            Group-label="name"
+            Group-label="Name"
             Group-Id="name"
             @handleChange="handleChange"
              Input-Type="text"
             :input="form.name"
           />
           <GroupForm
-            Group-label="lastName"
+            Group-label="Last Name"
             Group-Id="lastName"
             @handleChange="handleChange"
              Input-Type="text"
             :input="form.lastName"
           />
           <GroupForm
-            Group-label="email"
+            Group-label="Email"
             Group-Id="email"
             @handleChange="handleChange"
              Input-Type="text"
@@ -32,14 +32,14 @@
           />
 
           <GroupForm
-            Group-label="password"
+            Group-label="Password"
             Group-Id="password"
             @handleChange="handleChange"
-             Input-Type="text"
+             Input-Type="password"
             :input="form.password"
           />
           <GroupForm
-            Group-label="wallet"
+            Group-label="Wallet"
             Group-Id="wallet"
             @handleChange="handleChange"
             Input-Type="number"
@@ -62,16 +62,14 @@
         <table class="table table-striped">
           <thead class="thead-dark">
             <tr>
-              <th scope="col text-center">#</th>
-              <th scope="col text-center">name</th>
-              <th scope="col text-center">LastName</th>
-              <th scope="col text-center">email</th>
-              <th scope="col text-center">wallet</th>
+              <th scope="col text-center">Name</th>
+              <th scope="col text-center">Last Name</th>
+              <th scope="col text-center">Email</th>
+              <th scope="col text-center">Wallet</th>
             </tr>
           </thead>
           <tbody v-for="(user, index) in response">
             <tr>
-              <th scope="row">{{ index }}</th>
               <td>{{ user.name }}</td>
               <td>{{ user.lastName }}</td>
               <td>{{ user.email }}</td>
@@ -161,6 +159,7 @@ export default {
      });
     },
     async handleUpdate() {
+      window.scrollTo(0,0)
       try {
         await SendRequest(`${userPath}/${this.id}`, this.form, "PUT");
       } catch (err) {
