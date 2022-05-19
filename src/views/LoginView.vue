@@ -21,8 +21,11 @@
             type="submit"
             value="Ingresar"
             class="btn btn-outline-success"
+           
           />
         </form>
+        <p v-if="ErrorUser" class="text-danger text-center mt-3">Usuario no existe</p>
+        <p v-if="ErrorForm" class="text-danger text-center mt-3">Debe completar los formularios, para enviar</p>
       </section>
     </section>
   </div>
@@ -35,6 +38,8 @@ import GroupInput from "../components/GroupInput.vue";
 import PathName from "../router/PathName";
 import { GetToken } from "../helper/HttpHelper";
 import { userPath } from "../constant/PathAPI";
+import {setItemToLocalStorage} from "../helper/LocalStorageHelper"
+import ValidateForm from "../helper/ValidateFormHelper";
 export default {
   data() {
     return {
@@ -42,11 +47,20 @@ export default {
         email: "",
         password: "",
       },
+      ErrorUser:false,
+      ErrorForm:false,
+      toke:""
     };
   },
   methods: {
     async handleSubmit(e) {
       e.preventDefault();
+      if(!ValidateForm(this.form)){
+        this.ErrorForm = true;
+        return;
+      }
+      this.ErrorUser = false;
+      this.ErrorForm = false
       let options = {
         method: "POST",
         headers: {
@@ -56,11 +70,11 @@ export default {
         body:JSON.stringify(this.form)
       };
       try{
-        const res = await GetToken(`${userPath}/Login`, options)
-        console.log(res)
+         setItemToLocalStorage( await GetToken(`${userPath}/Login`, options) ) 
       }catch(err){
-        console.log(err)
+        this.ErrorUser = true
       }
+      thisn.$router.go('/Users') 
     },
 
     handleChange(name, value) {
