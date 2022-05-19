@@ -30,5 +30,8 @@ const DeleteRequest = async (endpoint, options = {}) => {
   };
   return await HttpRequest(endpoint, options);
 };
+const GetToken = async (endpoint, options) => {
+  return await HttpRequest(endpoint, options);
+};
 
-export { GetRequest, SendRequest, DeleteRequest };
+export { GetRequest, SendRequest, DeleteRequest, GetToken };

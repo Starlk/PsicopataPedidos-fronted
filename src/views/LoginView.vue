@@ -10,33 +10,31 @@
             @handleChange="handleChange"
             ClassName="login__group"
           />
-        <GroupInput
+          <GroupInput
             Group-label="password"
             Group-Id="password"
             ClassName="login__group"
             @handleChange="handleChange"
           />
 
-         
-            <input
-              type="submit"
-              value="Ingresar"
-              class="btn btn-outline-success"/>
-     
+          <input
+            type="submit"
+            value="Ingresar"
+            class="btn btn-outline-success"
+          />
         </form>
       </section>
     </section>
   </div>
 </template>
 
-
-
-
 <script>
 import GroupInputVue from "../components/GroupInput.vue";
 import { RouterLink } from "vue-router";
 import GroupInput from "../components/GroupInput.vue";
 import PathName from "../router/PathName";
+import { GetToken } from "../helper/HttpHelper";
+import { userPath } from "../constant/PathAPI";
 export default {
   data() {
     return {
@@ -47,21 +45,27 @@ export default {
     };
   },
   methods: {
-    handleSubmit(e) {
+    async handleSubmit(e) {
       e.preventDefault();
-      fetch("https://localhost:7103/api/user/Login", {
+      let options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(this.form),
-      }).then((data) => console.log(data.response));
+        body:JSON.stringify(this.form)
+      };
+      try{
+        const res = await GetToken(`${userPath}/Login`, options)
+        console.log(res)
+      }catch(err){
+        console.log(err)
+      }
     },
 
-    handleChange(name, value){
-        this.form ={...this.form, [name]:value}
-    }
-    ,
+    handleChange(name, value) {
+      this.form = { ...this.form, [name]: value };
+    },
   },
   computed: {},
   components: { GroupInputVue, GroupInput },
@@ -74,7 +78,6 @@ export default {
   background-color: rgba(62, 62, 62, 0.702);
   height: 100vh;
   justify-content: left;
-
 }
 .main {
   background-color: white;
