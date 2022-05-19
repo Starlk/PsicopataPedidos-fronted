@@ -1,5 +1,5 @@
 <template>    
-        <label for={{GroupId}} class="input_label">{{GroupTitle}}</label>
+        <label  class="input_label">{{GroupTitle}}</label>
      <div class="input__group">
         <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type"  />
     </div>

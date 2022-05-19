@@ -62,7 +62,7 @@
           </thead>
           <tbody v-for="(user, index) in response">
             <tr>
-              <th scope="row">{{ user.id }}</th>
+              <th scope="row">{{ index }}</th>
               <td>{{ user.name }}</td>
               <td>{{ user.lastName }}</td>
               <td>{{ user.email }}</td>

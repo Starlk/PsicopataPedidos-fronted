@@ -30,7 +30,8 @@
            
           />
         </form>
-        <h2 class="login__register">Don't have an account ? <span>Sign Up</span></h2>
+        <RouterLink to="/Register"></RouterLink>
+        <h2 class="login__register">Don't have an account ?<RouterLink to="/Register"><span>Sign Up</span></RouterLink> </h2>
         <p v-if="ErrorUser" class="text-danger text-center mt-3 absolute">Usuario no existe</p>
         <p v-if="ErrorForm" class="text-danger text-center mt-3 absolute">Debe completar los formularios, para enviar</p>
 
@@ -50,6 +51,7 @@ import { GetToken } from "../helper/HttpHelper";
 import { userPath } from "../constant/PathAPI";
 import {setItemToLocalStorage} from "../helper/LocalStorageHelper"
 import ValidateForm from "../helper/ValidateFormHelper";
+import router from "@/router"
 export default {
   data() {
     return {
@@ -65,26 +67,33 @@ export default {
   methods: {
     async handleSubmit(e) {
       e.preventDefault();
-      if(!ValidateForm(this.form)){
-        this.ErrorForm = true;
-        return;
-      }
-      this.ErrorUser = false;
-      this.ErrorForm = false
-      let options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body:JSON.stringify(this.form)
-      };
-      try{
-         setItemToLocalStorage( await GetToken(`${userPath}/Login`, options) ) 
-      }catch(err){
-        this.ErrorUser = true
-      }
-      thisn.$router.go('/Users') 
+       if(!ValidateForm(this.form)){
+         this.ErrorForm = true;
+         return;
+       }
+       this.ErrorUser = false;
+       this.ErrorForm = false
+       let options = {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+           Accept: "application/json",
+         },
+         body:JSON.stringify(this.form)
+       };
+       try{
+         const datos = await GetToken(`${userPath}/Login`, options)
+          if(datos){
+            setItemToLocalStorage(datos)
+            this.login();
+          }
+       }catch(err){
+         this.ErrorUser = true
+       }
+
+    },
+    login(){
+      router.push({ path: '/Users',replace: true })
     },
 
     handleChange(name, value) {
