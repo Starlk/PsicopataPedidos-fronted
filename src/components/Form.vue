@@ -9,6 +9,7 @@
       :input="Form[field.name]"
     />
   </form>
+  <button class="btn btn-outline-success w-100 mb-2" @click="handleSubmit">Save</button>
 </template>
 
 <script>
@@ -27,9 +28,12 @@ export default {
   },
   methods: {
     handleChange(name, value) {
-      console.log(this.Form);
       this.Form = { ...this.Form, [name]: value };
     },
+    handleSubmit(){
+      console.log("click")
+      this.$emit("handleSubmit",this.Form)
+    }
   },
   components: { GroupInput },
 };

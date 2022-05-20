@@ -13,11 +13,6 @@
       <article class="_modal__body">
         <slot></slot>
       </article>
-      <footer class="_modal__footer">
-        <button class="btn btn-outline-success _modal__btn">
-          {{ btnName || "Save" }}
-        </button>
-      </footer>
     </section>
   </div>
 </template>
@@ -84,11 +79,5 @@ export default {
 
 ._modal__body {
   padding: 0.5em 4em;
-}
-._modal__footer {
-  margin-bottom: 1rem;
-}
-._modal__btn {
-  margin-left: 10px;
 }
 </style>

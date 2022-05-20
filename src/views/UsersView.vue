@@ -51,7 +51,12 @@
     </div>
   </section>
   <Modal title="Creat users" v-if="isModalOpen" @closeModel="closeModal">
-    <Form :fields="arrayForm" :InitialForm="form" btnName="Save user" />
+    <Form
+      :fields="arrayForm"
+      :InitialForm="form"
+      btnName="Save user"
+      @handleSubmit="handleSubmit"
+    />
   </Modal>
 </template>
 
@@ -99,26 +104,22 @@ export default {
       const execute = this.isUpdate ? this.handleUpdate : this.handleSubmit;
       execute();
     },
-    async handleSubmit() {
-      if (!ValidateForm(this.form)) {
+    async handleSubmit(form) {
+      console.log("desde el padre se ejecuto")
+      if (!ValidateForm(form)) {
         this.ErrorForm = true;
         return;
       }
       this.ErrorForm = false;
       try {
         await SendRequest(userPath, {
-          ...this.form,
+          ...form,
           ["isAdmin"]: "false",
         });
       } catch (err) {
         console.error(err);
       }
       this.GetAllUsers();
-
-      this.$swal({
-        title: "Usuario guardado",
-        icon: "success",
-      });
     },
     async handleUpdate() {
       window.scrollTo(0, 0);
