@@ -1,65 +1,21 @@
 <template>
-  <header class="bg-dark shadow p-2 mb-4">
-    <h1 class="text-white text-center">Usuarios</h1>
+  <header class="bg-primary shadow p-2 mb-4">
+    <h1 class="text-white text-center fs-3">Usuarios</h1>
   </header>
   <section class="container mt-3">
-    <div class="row justify-content-center  align-items-start">
-      <div class="col-12 col-lg-4 align-self-start mb-5">
-        <form class="p-4 shadow rounded" @submit="handleForm">
-          <h1 class="fs-3 text-center mb-3">
-            {{ isUpdate ? "Update user" : "Create user" }}
-          </h1>
-          <GroupForm
-            Group-label="Name"
-            Group-Id="name"
-            @handleChange="handleChange"
-             Input-Type="text"
-            :input="form.name"
-          />
-          <GroupForm
-            Group-label="Last Name"
-            Group-Id="lastName"
-            @handleChange="handleChange"
-             Input-Type="text"
-            :input="form.lastName"
-          />
-          <GroupForm
-            Group-label="Email"
-            Group-Id="email"
-            @handleChange="handleChange"
-             Input-Type="text"
-            :input="form.email"
-          />
-
-          <GroupForm
-            Group-label="Password"
-            Group-Id="password"
-            @handleChange="handleChange"
-             Input-Type="password"
-            :input="form.password"
-          />
-          <GroupForm
-            Group-label="Wallet"
-            Group-Id="wallet"
-            @handleChange="handleChange"
-            Input-Type="number"
-            :input="form.wallet"
-          />
-          <div class="col col-12 justify-content-center">
-            <input
-              type="submit"
-              class="btn btn-outline-success text-center shadow btnForm"
-              :value="isUpdate ? 'Update user' : 'Create user'"
-            />
-            <p v-if="ErrorForm" class="text-danger text-center mt-3">
-              Completed the form before send it
-            </p>
-          </div>
-        </form>
+    <div class="row justify-content-end">
+      <div class="col d-flex flex-row-reverse">
+        <button
+          class="btn btn-outline-success user__add--position"
+          @click="openModal"
+        >
+          Add
+        </button>
       </div>
-
-      <div class="col-12 col-lg-7">
-        <table class="table table-striped">
+    </div>
+    <div class="row justify-content-center align-items-start">
+      <div class="col-12 mt-3">
+        <table class="table table-primary">
           <thead class="thead-dark">
             <tr>
               <th scope="col text-center">Name</th>
@@ -75,12 +31,18 @@
               <td>{{ user.email }}</td>
               <td>{{ user.wallet }}</td>
               <td>
-                <button class="btn btn-outline-success mb-2" @click="OnFormUpdate(user)"> 
+                <button
+                  class="btn btn-outline-success mb-2"
+                  @click="OnFormUpdate(user)"
+                >
                   Update
-                 </button> 
-                 <button class="btn btn-outline-danger" @click="handleClick(user.id)"> 
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  @click="handleClick(user.id)"
+                >
                   Delete
-                 </button> 
+                </button>
               </td>
             </tr>
           </tbody>
@@ -88,6 +50,9 @@
       </div>
     </div>
   </section>
+  <Modal title="Creat users" v-if="isModalOpen" @closeModel="closeModal">
+    <Form :fields="arrayForm" :InitialForm="form" btnName="Save user" />
+  </Modal>
 </template>
 
 <script>
@@ -96,15 +61,10 @@ import GroupForm from "../components/GroupForm.vue";
 import { GetRequest, SendRequest, DeleteRequest } from "../helper/HttpHelper";
 import { userPath } from "../constant/PathAPI";
 import ValidateForm from "../helper/ValidateFormHelper";
-import { AlertMessage } from "../helper/Alerts";
-
-const initialForm = {
-  name: "",
-  lastName: "",
-  email: "",
-  password: "",
-  wallet: 0,
-};
+import Modal from "../components/Modal.vue";
+import Form from "../components/Form.vue";
+import users from "../json/users.json";
+import initialForm from "../modals/initialFormUser";
 export default {
   data() {
     return {
@@ -113,6 +73,8 @@ export default {
       isUpdate: false,
       id: 0,
       ErrorForm: false,
+      isModalOpen: false,
+      arrayForm: users,
     };
   },
   methods: {
@@ -138,28 +100,28 @@ export default {
       execute();
     },
     async handleSubmit() {
-        if(!ValidateForm(this.form)){
-          this.ErrorForm = true
-          return;
-        }
-        this.ErrorForm = false;
-       try {
-         await SendRequest(userPath, {
-           ...this.form,
-           ["isAdmin"]: "false",
-         });
-       } catch (err) {
-         console.error(err);
-       }
-       this.GetAllUsers();
+      if (!ValidateForm(this.form)) {
+        this.ErrorForm = true;
+        return;
+      }
+      this.ErrorForm = false;
+      try {
+        await SendRequest(userPath, {
+          ...this.form,
+          ["isAdmin"]: "false",
+        });
+      } catch (err) {
+        console.error(err);
+      }
+      this.GetAllUsers();
 
-     this.$swal({
-       title:"Usuario guardado",
-       icon:"success"
-     });
+      this.$swal({
+        title: "Usuario guardado",
+        icon: "success",
+      });
     },
     async handleUpdate() {
-      window.scrollTo(0,0)
+      window.scrollTo(0, 0);
       try {
         await SendRequest(`${userPath}/${this.id}`, this.form, "PUT");
       } catch (err) {
@@ -181,27 +143,17 @@ export default {
     handleChange(name, value) {
       this.form = { ...this.form, [name]: value };
     },
+
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
   },
   mounted() {
     this.GetAllUsers();
   },
-  components: { GroupInput, GroupForm },
+  components: { GroupInput, GroupForm, Modal, Form },
 };
 </script>
-
-<style>
-.btnForm {
-  margin-top: 0.5em;
-  display: block;
-  margin: 0 auto;
-}
-
-.icon__trash{
-  widows: 20px;
-  height: 20px;
-  margin-bottom: 10px;
-  
-}
-
-
-</style>

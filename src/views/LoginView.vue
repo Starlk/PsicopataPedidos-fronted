@@ -22,8 +22,9 @@
             type="password"
             :input="form.password"
           />
-
-          <input type="submit" value="Sign in" class="login__btn" />
+       
+            <input type="submit" value="Sign in" class="login__btn" />
+      
           <section class="spinner">
             <div
               class="spinner-border loading--absolute"
