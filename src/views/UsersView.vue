@@ -15,38 +15,16 @@
     </div>
     <div class="row justify-content-center align-items-start">
       <div class="col-12 mt-3">
-        <table class="table table-primary">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col text-center">Name</th>
-              <th scope="col text-center">Last Name</th>
-              <th scope="col text-center">Email</th>
-              <th scope="col text-center">Wallet</th>
-            </tr>
-          </thead>
-          <tbody v-for="(user, index) in response">
-            <tr>
-              <td>{{ user.name }}</td>
-              <td>{{ user.lastName }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.wallet }}</td>
-              <td>
-                <button
-                  class="btn btn-outline-success mb-2"
-                  @click="OnFormUpdate(user)"
-                >
-                  Update
-                </button>
-                <button
-                  class="btn btn-outline-danger"
-                  @click="handleClick(user.id)"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <Table :titlesProp="['Name ', 'Last Name', 'Email', 'Wallet']">
+          <tr v-for="(user, index) in response">
+            <td>{{ user.name }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.wallet }}</td>
+            <td>Delete</td>
+            <td>Upadate</td>
+          </tr>
+        </Table>
       </div>
     </div>
   </section>
@@ -70,6 +48,7 @@ import Modal from "../components/Modal.vue";
 import Form from "../components/Form.vue";
 import users from "../json/users.json";
 import initialForm from "../modals/initialFormUser";
+import Table from "../components/Table.vue";
 export default {
   data() {
     return {
@@ -105,7 +84,7 @@ export default {
       execute();
     },
     async handleSubmit(form) {
-      console.log("desde el padre se ejecuto")
+      console.log("desde el padre se ejecuto");
       if (!ValidateForm(form)) {
         this.ErrorForm = true;
         return;
@@ -155,6 +134,6 @@ export default {
   mounted() {
     this.GetAllUsers();
   },
-  components: { GroupInput, GroupForm, Modal, Form },
+  components: { GroupInput, GroupForm, Modal, Form, Table },
 };
 </script>
