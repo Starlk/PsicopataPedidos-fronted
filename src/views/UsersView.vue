@@ -1,7 +1,4 @@
 <template>
-  <header class="bg-primary shadow p-2 mb-4">
-    <h1 class="text-white text-center fs-3">Usuarios</h1>
-  </header>
   <section class="container mt-3">
     <div class="row justify-content-end">
       <div class="col d-flex flex-row-reverse">
@@ -21,8 +18,15 @@
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.wallet }}</td>
-            <td>Delete</td>
-            <td>Upadate</td>
+            <td>
+              <button class="btn btn-outline-danger" @click="openModalUpdate(user)">Update</button>
+              <button
+                class="btn btn-outline-danger"
+                @click="handleDelete(user.id)"
+              >
+                Delete
+              </button>
+            </td>
           </tr>
         </Table>
       </div>
@@ -34,6 +38,14 @@
       :InitialForm="form"
       btnName="Save user"
       @handleSubmit="handleSubmit"
+    />
+  </Modal>
+  <Modal title="Update users" v-if="isUpdateModal" @closeModel="closeUpdateModal">
+    <Form
+      :fields="arrayForm"
+      :InitialForm="form"
+      btnName="Update user"
+      @handleSubmit="handleUpdate"
     />
   </Modal>
 </template>
@@ -54,9 +66,7 @@ export default {
     return {
       response: [],
       form: initialForm,
-      isUpdate: false,
-      id: 0,
-      ErrorForm: false,
+      isUpdateModal: false,
       isModalOpen: false,
       arrayForm: users,
     };
@@ -70,7 +80,7 @@ export default {
         console.log(err);
       }
     },
-    async handleClick(id) {
+    async handleDelete(id) {
       try {
         await DeleteRequest(`${userPath}/${id}`);
       } catch (err) {
@@ -82,6 +92,10 @@ export default {
       e.preventDefault();
       const execute = this.isUpdate ? this.handleUpdate : this.handleSubmit;
       execute();
+    },
+    openModalUpdate(users){
+      this.form = {...users}
+      this.isUpdateModal = true
     },
     async handleSubmit(form) {
       console.log("desde el padre se ejecuto");
@@ -100,14 +114,12 @@ export default {
       }
       this.GetAllUsers();
     },
-    async handleUpdate() {
-      window.scrollTo(0, 0);
-      try {
-        await SendRequest(`${userPath}/${this.id}`, this.form, "PUT");
-      } catch (err) {
-        console.log(err);
-      }
-      this.OffFormUpdate();
+    async handleUpdate(form) {
+       try {
+         await SendRequest(`${userPath}/${this.form.id}`, form, "PUT");
+       } catch (err) {
+         console.log(err);
+       }
       this.GetAllUsers();
     },
     OnFormUpdate(user) {
@@ -122,6 +134,7 @@ export default {
     },
     handleChange(name, value) {
       this.form = { ...this.form, [name]: value };
+    
     },
 
     openModal() {
@@ -130,6 +143,10 @@ export default {
     closeModal() {
       this.isModalOpen = false;
     },
+    closeUpdateModal(){
+      console.log("lala")
+      this.isUpdateModal = false
+    }
   },
   mounted() {
     this.GetAllUsers();
