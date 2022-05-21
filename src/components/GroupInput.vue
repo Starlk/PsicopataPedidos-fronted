@@ -1,13 +1,14 @@
 <template>    
         <label  class="input_label">{{GroupTitle}}</label>
      <div class="input__group">
-        <input id={{GroupId}} @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type" :value="input"  />
+        <input :id="GroupId" @input="event=>HooksInputEvent(event.target.value)"  :placeholder="GroupLabel" :type="type" :value="input"  />
     </div>
 </template>
 
 <script>
 import { computed } from '@vue/reactivity';
 export default{
+
     props:{
         GroupLabel:String,
         GroupId:String,

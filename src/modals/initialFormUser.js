@@ -3,7 +3,7 @@ const initialForm = {
   lastName: "",
   email: "",
   password: "",
-  wallet: 0,
+  wallet: "",
 };
 
 export default initialForm;
