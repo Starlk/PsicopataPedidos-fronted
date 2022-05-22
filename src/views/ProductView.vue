@@ -1,11 +1,11 @@
 <template>
   <Pages @openModal="openModal">
     <Table :titlesProp="['Name ', 'Last Name', 'Email', 'Wallet']">
-      <tr v-for="(user, index) in response">
-        <td>{{ user.name }}</td>
-        <td>{{ user.lastName }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.wallet }}</td>
+      <tr v-for="(product, index) in response" :key="user.id">
+        <td>{{ product.name }}</td>
+        <td>{{ product.lastName }}</td>
+        <td>{{ product.email }}</td>
+        <td>{{ product.wallet }}</td>
         <td>
           <ButtonCrud @Click="() => openModalUpdate(user)">Update</ButtonCrud>
           <ButtonCrud @Click="() => handleDelete(user.id)">Delete</ButtonCrud>
@@ -14,7 +14,7 @@
     </Table>
   </Pages>
   <Modal
-    :title="isUpdate ? 'Update user' : 'Create user'"
+    :title="isUpdate ? 'Update product' : 'Create product'"
     v-if="isModalOpen"
     @closeModel="closeModal"
   >
@@ -30,12 +30,12 @@
 </template>
 <script>
 import { GetRequest, SendRequest, DeleteRequest } from "../helper/HttpHelper";
-import { userPath } from "../constant/PathAPI";
+import { productPath } from "../constant/PathAPI";
 import ValidateForm from "../helper/ValidateFormHelper";
 import Modal from "../components/Modal.vue";
 import Form from "../components/Form.vue";
 import users from "../json/users.json";
-import initialForm from "../modals/initialFormUser";
+import initialProduct from "../modals/InitialFormProduct"
 import Table from "../components/Table.vue";
 import Pages from "../components/PagesControl.vue";
 import ButtonCrud from "../components/ButtonCrud.vue";
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       response: [],
-      form: initialForm,
+      form: initialProduct,
       isModalOpen: false,
       arrayForm: users,
       isUpdate: false,
@@ -53,31 +53,28 @@ export default {
   methods: {
     async GetAllUsers() {
       try {
-        const Users = await GetRequest(userPath);
-        this.response = [...Users];
+        this.response = [...(await GetRequest(productPath))];
       } catch (err) {
         console.log(err);
       }
     },
     async handleDelete(id) {
       try {
-        await DeleteRequest(`${userPath}/${id}`);
+        await DeleteRequest(`${productPath}/${id}`);
       } catch (err) {
         console.log(err);
       }
       this.GetAllUsers();
     },
     async handleSubmit(form) {
-      console.log("desde el padre se ejecuto");
       if (!ValidateForm(form)) {
         this.ErrorForm = true;
         return;
       }
       this.ErrorForm = false;
       try {
-        await SendRequest(userPath, {
+        await SendRequest(productPath, {
           ...form,
-          ["isAdmin"]: "false",
         });
       } catch (err) {
         console.error(err);
@@ -86,7 +83,7 @@ export default {
     },
     async handleUpdate(form) {
       try {
-        await SendRequest(`${userPath}/${this.form.id}`, form, "PUT");
+        await SendRequest(`${productPath}/${this.form.id}`, form, "PUT");
       } catch (err) {
         console.log(err);
       }

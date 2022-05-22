@@ -2,4 +2,7 @@ const MainRoute = "https://localhost:7103/api";
 
 const userPath = `${MainRoute}/user`;
 
-export { userPath };
+const productPath = `${MainRoute}/product`;
+const categoryPath = `${MainRoute}/category`;
+
+export { userPath, productPath, categoryPath };

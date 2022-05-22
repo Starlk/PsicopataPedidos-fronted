@@ -1,23 +1,23 @@
 [
     {
-        "placeholder":"Name user",
+        "placeholder":"Product name",
         "name":"name",
         "type":"text"
     },
     {
-        "placeholder":"Last name",
-        "name":"lastName",
+        "placeholder":"Description",
+        "name":"description",
         "type":"text"
     },
     {
-        "placeholder":"Email addrees",
-        "name":"email",
-        "type":"text"
+        "placeholder":"Price",
+        "name":"price",
+        "type":"number"
     },
     {
-        "placeholder":"Password user",
-        "name":"password",
-        "type":"text"
+        "placeholder":"Stock",
+        "name":"stock",
+        "type":"number"
     },
     {
         "placeholder":"Wallet",

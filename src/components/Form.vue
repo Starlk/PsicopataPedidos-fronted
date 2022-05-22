@@ -31,7 +31,6 @@ export default {
       this.Form = { ...this.Form, [name]: value };
     },
     handleSubmit(){
-      console.log("click")
       this.$emit("handleSubmit",this.Form)
     }
   },

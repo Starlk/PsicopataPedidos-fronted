@@ -1,28 +1,8 @@
 [
     {
-        "placeholder":"Name user",
+        "placeholder":"Name category",
         "name":"name",
         "type":"text"
-    },
-    {
-        "placeholder":"Last name",
-        "name":"lastName",
-        "type":"text"
-    },
-    {
-        "placeholder":"Email addrees",
-        "name":"email",
-        "type":"text"
-    },
-    {
-        "placeholder":"Password user",
-        "name":"password",
-        "type":"text"
-    },
-    {
-        "placeholder":"Wallet",
-        "name":"wallet",
-        "type":"number"
     }
 
 ]
