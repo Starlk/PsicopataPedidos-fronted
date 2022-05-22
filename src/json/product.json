@@ -18,11 +18,6 @@
         "placeholder":"Stock",
         "name":"stock",
         "type":"number"
-    },
-    {
-        "placeholder":"Wallet",
-        "name":"wallet",
-        "type":"number"
     }
 
 ]

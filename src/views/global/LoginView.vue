@@ -22,9 +22,9 @@
             type="password"
             :input="form.password"
           />
-       
-            <input type="submit" value="Sign in" class="login__btn" />
-      
+
+          <input type="submit" value="Sign in" class="login__btn" />
+
           <section class="spinner">
             <div
               class="spinner-border loading--absolute"
@@ -63,12 +63,14 @@ import { setItemToLocalStorage } from "../../helper/LocalStorageHelper";
 import ValidateForm from "../../helper/ValidateFormHelper";
 import router from "@/router";
 import { useTokeStore } from "../../stores/tokeStore";
+import CreateOptions from "../../helper/CreateOption";
+import jwtDecode from "jwt-decode";
 
 const initialForm = { email: "", password: "" };
 export default {
-  setup(){
+  setup() {
     const token = useTokeStore();
-    return token
+    return token;
   },
   data() {
     return {
@@ -82,37 +84,33 @@ export default {
   methods: {
     async handleSubmit(e) {
       e.preventDefault();
-      this.login()
-      // if (!ValidateForm(this.form)) {
-      //   this.ErrorForm = true;
-      //   return;
-      // }
-      // this.ErrorUser = false;
-      // this.ErrorForm = false;
-      // this.loading = true;
-      // let options = {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: "application/json",
-      //   },
-      //   body: JSON.stringify(this.form),
-      // };
-      // try {
-      //   const datos = await GetToken(`${userPath}/Login`, options);
-      //   if (datos) {
-      //     setItemToLocalStorage(datos);
-      //     this.setToke(datos)
-      //     this.loading = false;
-      //     this.login();
-      //   }
-      // } catch (err) {
-      //   this.ErrorUser = true;
-      //   this.form = initialForm;
-      // }
+      if (!ValidateForm(this.form)) {
+        this.ErrorForm = true;
+        return;
+      }
+      this.ErrorUser = false;
+      this.ErrorForm = false;
+      this.loading = true;
+      const options = CreateOptions(
+        "POST",
+        { "Content-Type": "application/json", Accept: "application/json" },
+        this.form
+      );
+      try {
+        const datos = await GetToken(`${userPath}/Login`, options);
+        if (datos) {
+          const values =  Object.values(jwtDecode(datos))
+          this.loading = false;
+          this.setToke(datos,values[1],values[0]);
+          this.login();
+        }
+      } catch (err) {
+        this.ErrorUser = true;
+        this.form = initialForm;
+      }
     },
     login() {
-      router.push({ path: "/dashboard"});
+      router.push({ path: "/dashboard" });
     },
 
     handleChange(name, value) {
@@ -212,7 +210,6 @@ export default {
     height: 100vh;
   }
 }
-
 
 .loading--absolute {
   position: absolute;

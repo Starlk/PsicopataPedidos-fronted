@@ -2,8 +2,13 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
-        <li class="nav-item nav-link" v-for="({name,path}, index) in links">
-          <RouterLink :to="path" class="nav-link">{{ name }}</RouterLink>
+        <li
+          class="nav-item nav-link"
+          v-for="({ name, path }, index) in LinksVisible"
+        >
+          <RouterLink :to="path" class="nav-link" >{{
+            name
+          }}</RouterLink>
         </li>
       </ul>
     </div>
@@ -13,20 +18,37 @@
   </div>
 </template>
 
-<script setup>
-import { RouterView, RouterLink } from "vue-router";
-</script>
-
 <script>
+import { RouterView, RouterLink } from "vue-router";
+import Roles from "../../constant/Roles";
+import { useTokeStore } from "../../stores/tokeStore";
 export default {
+  setup() {
+    const token = useTokeStore();
+    return {
+      token,
+    };
+  },
   data() {
     return {
       links: [
-        { name: "users", path: "/dashboard/" },
-        { name: "Products", path: "/dashboard/Products" },
-        { name: "Categories", path: "/dashboard/Categories" },
+        { name: "List Products", path: "/dashboard/", role: Roles.client },
+        { name: "users", path: "/dashboard/Users", role: Roles.admin },
+        { name: "Products", path: "/dashboard/Products", role: Roles.admin },
+        {
+          name: "Categories",
+          path: "/dashboard/Categories",
+          role: Roles.admin,
+        },
       ],
     };
+  },
+  computed: {
+    LinksVisible() {
+      return this.token.getAuthorizated
+        ? this.links
+        : this.links.filter((link) => link.role !== Roles.admin);
+    },
   },
 };
 </script>

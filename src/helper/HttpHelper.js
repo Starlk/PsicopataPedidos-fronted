@@ -10,23 +10,32 @@ const HttpRequest = async (endpoint, options = {}) => {
     };
   return await res.json();
 };
-const GetRequest = async (endpoint) => {
-  return await HttpRequest(endpoint, { method: "GET" });
+const GetRequest = async (endpoint, token, option = {}) => {
+  if (ValidatedOptions(option)) return await HttpRequest(endpoint, option);
+  return await HttpRequest(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+  });
 };
-const SendRequest = async (endpoint, data, method, options = {}) => {
+const SendRequest = async (endpoint, data, method, token, options = {}) => {
   if (ValidatedOptions(options)) return await HttpRequest(endpoint, options);
   options.method = method || "POST";
   options.headers = {
     "Content-Type": "application/json",
+    Authorization: `bearer ${token}`,
   };
   options.body = JSON.stringify(data);
   return await HttpRequest(endpoint, options);
 };
-const DeleteRequest = async (endpoint, options = {}) => {
+const DeleteRequest = async (endpoint, token, options = {}) => {
   if (ValidatedOptions(options)) return await HttpRequest(endpoint, options);
   options.method = "DELETE";
   options.headers = {
     "Content-Type": "application/json",
+    Authorization: `bearer ${token}`,
   };
   return await HttpRequest(endpoint, options);
 };

@@ -1,14 +1,14 @@
 <template>
   <Pages @openModal="openModal">
-    <Table :titlesProp="['Name ', 'Last Name', 'Email', 'Wallet']">
-      <tr v-for="(product, index) in response" :key="user.id">
+    <Table :titlesProp="['Name ', 'Description', 'Price', 'Stock']">
+      <tr v-for="(product, index) in response" :key="product.id">
         <td>{{ product.name }}</td>
-        <td>{{ product.lastName }}</td>
-        <td>{{ product.email }}</td>
-        <td>{{ product.wallet }}</td>
+        <td>{{ product.description}}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
         <td>
-          <ButtonCrud @Click="() => openModalUpdate(user)">Update</ButtonCrud>
-          <ButtonCrud @Click="() => handleDelete(user.id)">Delete</ButtonCrud>
+          <ButtonCrud @Click="() => openModalUpdate(product)">Update</ButtonCrud>
+          <ButtonCrud @Click="() => handleDelete(product.id)">Delete</ButtonCrud>
         </td>
       </tr>
     </Table>
@@ -34,33 +34,41 @@ import { productPath } from "../../constant/PathAPI";
 import ValidateForm from "../../helper/ValidateFormHelper";
 import Modal from "../../components/Modal.vue";
 import Form from "../../components/Form.vue";
-import users from "../../json/users.json";
+import product from "../../json/product.json"
 import initialProduct from "../../modals/InitialFormProduct"
 import Table from "../../components/Table.vue";
 import Pages from "../../components/PagesControl.vue";
 import ButtonCrud from "../../components/ButtonCrud.vue";
 import HandleChange from "../../helper/HandleChangeHelper";
+import { useTokeStore } from "../../stores/tokeStore";
 export default {
+  setup(){
+    const toke = useTokeStore()
+
+    return{
+      toke
+    }
+  },
   data() {
     return {
       response: [],
       form: initialProduct,
       isModalOpen: false,
-      arrayForm: users,
+      arrayForm: product,
       isUpdate: false,
     };
   },
   methods: {
     async GetAllUsers() {
       try {
-        this.response = [...(await GetRequest(productPath))];
+        this.response = [...(await GetRequest(productPath,this.toke.getToke))];
       } catch (err) {
         console.log(err);
       }
     },
     async handleDelete(id) {
       try {
-        await DeleteRequest(`${productPath}/${id}`);
+        await DeleteRequest(`${productPath}/${id}`,this.toke.getToke);
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +83,7 @@ export default {
       try {
         await SendRequest(productPath, {
           ...form,
-        });
+        },this.toke.getToke);
       } catch (err) {
         console.error(err);
       }
@@ -83,7 +91,7 @@ export default {
     },
     async handleUpdate(form) {
       try {
-        await SendRequest(`${productPath}/${this.form.id}`, form, "PUT");
+        await SendRequest(`${productPath}/${this.form.id}`, form, "PUT",this.toke.getToke);
       } catch (err) {
         console.log(err);
       }
@@ -102,6 +110,7 @@ export default {
       this.isModalOpen = true;
     },
     closeModal() {
+      this.form = initialProduct
       this.isModalOpen = false;
       this.isUpdate = false;
     },

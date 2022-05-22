@@ -40,7 +40,15 @@ import Table from "../../components/Table.vue";
 import Pages from "../../components/PagesControl.vue";
 import ButtonCrud from "../../components/ButtonCrud.vue";
 import HandleChange from "../../helper/HandleChangeHelper";
+import { useTokeStore } from "../../stores/tokeStore";
 export default {
+  setup(){
+    const token = useTokeStore()
+    return {
+      token
+    }
+  },
+
   data() {
     return {
       response: [],
@@ -53,7 +61,7 @@ export default {
   methods: {
     async GetAllUsers() {
       try {
-        const Users = await GetRequest(userPath);
+        const Users = await GetRequest(userPath,this.token.getToke);
         this.response = [...Users];
       } catch (err) {
         console.log(err);
@@ -61,7 +69,7 @@ export default {
     },
     async handleDelete(id) {
       try {
-        await DeleteRequest(`${userPath}/${id}`);
+        await DeleteRequest(`${userPath}/${id}`,this.token.getToke);
       } catch (err) {
         console.log(err);
       }
@@ -78,7 +86,7 @@ export default {
         await SendRequest(userPath, {
           ...form,
           ["isAdmin"]: "false",
-        });
+        },this.token.getToke);
       } catch (err) {
         console.error(err);
       }
@@ -86,7 +94,7 @@ export default {
     },
     async handleUpdate(form) {
       try {
-        await SendRequest(`${userPath}/${this.form.id}`, form, "PUT");
+        await SendRequest(`${userPath}/${this.form.id}`, form, "PUT",this.token.getToke);
       } catch (err) {
         console.log(err);
       }

@@ -1,12 +1,12 @@
 <template>
   <Pages @openModal="openModal">
-    <Table :titlesProp="['Name ', 'Last Name', 'Email', 'Wallet']">
-      <tr v-for="(category, index) in response">
+    <Table :titlesProp="['Name ']">
+      <tr v-for="(category, index) in response" :key="category.id">
         <td>{{ category.name }}</td>
 
         <td>
-          <ButtonCrud @Click="() => openModalUpdate(user)">Update</ButtonCrud>
-          <ButtonCrud @Click="() => handleDelete(user.id)">Delete</ButtonCrud>
+          <ButtonCrud @Click="() => openModalUpdate(category)">Update</ButtonCrud>
+          <ButtonCrud @Click="() => handleDelete(category.id)">Delete</ButtonCrud>
         </td>
       </tr>
     </Table>
@@ -27,7 +27,11 @@
   </Modal>
 </template>
 <script>
-import { GetRequest, SendRequest, DeleteRequest } from "../../helper/HttpHelper";
+import {
+  GetRequest,
+  SendRequest,
+  DeleteRequest,
+} from "../../helper/HttpHelper";
 import { categoryPath } from "../../constant/PathAPI";
 import ValidateForm from "../../helper/ValidateFormHelper";
 import Modal from "../../components/Modal.vue";
@@ -38,8 +42,17 @@ import Table from "../../components/Table.vue";
 import Pages from "../../components/PagesControl.vue";
 import ButtonCrud from "../../components/ButtonCrud.vue";
 import HandleChange from "../../helper/HandleChangeHelper";
+import CreateOptions from "../../helper/CreateOption";
+import { useTokeStore } from "../../stores/tokeStore";
 export default {
+  setup(){
+    const token = useTokeStore();
+    return{
+      token
+    }
+  },
   data() {
+    
     return {
       response: [],
       form: initialCategory,
@@ -49,20 +62,20 @@ export default {
     };
   },
   methods: {
-    async GetAllUsers() {
+    async GetAllCategory() {
       try {
-        this.response = [...(await GetRequest(categoryPath))];
+        this.response = [...(await GetRequest(categoryPath,this.token.getToke))];
       } catch (err) {
         console.log(err);
       }
     },
     async handleDelete(id) {
       try {
-        await DeleteRequest(`${categoryPath}/${id}`);
+        await DeleteRequest(`${categoryPath}/${id}`,this.token.getToke);
       } catch (err) {
         console.log(err);
       }
-      this.GetAllUsers();
+      this.GetAllCategory();
     },
     async handleSubmit(form) {
       if (!ValidateForm(form)) {
@@ -73,21 +86,21 @@ export default {
       try {
         await SendRequest(categoryPath, {
           ...form,
-        });
+        },"POST",this.token.getToke);
       } catch (err) {
         console.error(err);
       }
-      this.GetAllUsers();
+      this.GetAllCategory();
     },
     async handleUpdate(form) {
       try {
-        await SendRequest(`${categoryPath}/${this.form.id}`, form, "PUT");
+        await SendRequest(`${categoryPath}/${this.form.id}`, form, "PUT",this.token.getToke);
       } catch (err) {
         console.log(err);
       }
-      this.GetAllUsers();
+      this.GetAllCategory();
     },
-    openModalUpdate(users) {
+    openModalUpdate(users) { 
       this.form = { ...users };
       this.isUpdate = true;
       this.openModal();
@@ -101,10 +114,11 @@ export default {
     closeModal() {
       this.isModalOpen = false;
       this.isUpdate = false;
+      this.form = initialCategory
     },
   },
   mounted() {
-    this.GetAllUsers();
+    this.GetAllCategory();
   },
   components: { Modal, Form, Table, Pages, ButtonCrud },
 };
