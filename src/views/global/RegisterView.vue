@@ -68,26 +68,29 @@
             <button class="btn__register" @click="handleSubmit">
               Register
             </button>
+            <RouterLink  to="/" class="text-center">Sign up</RouterLink >
             <p class="text-danger fs-2 text-center">{{ ErrorMessage }}</p>
           </section>
         </div>
       </section>
       <section class="col col-12 col-lg-5 col-full-heigth align-self-center">
-        <img src="../assets/Shopping.svg" class="register__img" />
+        <img src="../../assets/Shopping.svg" class="register__img" />
       </section>
+
     </section>
   </section>
 </template>
 
 <script>
-import GroupInput from "../components/GroupInput.vue";
-import HandleChange from "../helper/HandleChangeHelper";
-import initialForm from "../modals/initialFormUser";
-import FormConstant from "../constant/FormConstant";
-import ValidateForm from "../helper/ValidateFormHelper";
-import EmailValidate from "../helper/RegexForm";
-import { SendRequest } from "../helper/HttpHelper";
-import { userPath } from "../constant/PathAPI";
+import GroupInput from "../../components/GroupInput.vue";
+import HandleChange from "../../helper/HandleChangeHelper";
+import initialForm from "../../modals/initialFormUser";
+import FormConstant from "../../constant/FormConstant";
+import ValidateForm from "../../helper/ValidateFormHelper";
+import EmailValidate from "../../helper/RegexForm";
+import { SendRequest } from "../../helper/HttpHelper";
+import { userPath } from "../../constant/PathAPI";
+import { RouterLink } from "vue-router";
 const { IsPasswordValided } = FormConstant;
 export default {
   data() {

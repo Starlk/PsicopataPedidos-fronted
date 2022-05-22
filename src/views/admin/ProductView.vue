@@ -1,9 +1,11 @@
 <template>
   <Pages @openModal="openModal">
     <Table :titlesProp="['Name ', 'Last Name', 'Email', 'Wallet']">
-      <tr v-for="(category, index) in response">
-        <td>{{ category.name }}</td>
-
+      <tr v-for="(product, index) in response" :key="user.id">
+        <td>{{ product.name }}</td>
+        <td>{{ product.lastName }}</td>
+        <td>{{ product.email }}</td>
+        <td>{{ product.wallet }}</td>
         <td>
           <ButtonCrud @Click="() => openModalUpdate(user)">Update</ButtonCrud>
           <ButtonCrud @Click="() => handleDelete(user.id)">Delete</ButtonCrud>
@@ -12,7 +14,7 @@
     </Table>
   </Pages>
   <Modal
-    :title="isUpdate ? 'Update user' : 'Create user'"
+    :title="isUpdate ? 'Update product' : 'Create product'"
     v-if="isModalOpen"
     @closeModel="closeModal"
   >
@@ -27,38 +29,38 @@
   </Modal>
 </template>
 <script>
-import { GetRequest, SendRequest, DeleteRequest } from "../helper/HttpHelper";
-import { categoryPath } from "../constant/PathAPI";
-import ValidateForm from "../helper/ValidateFormHelper";
-import Modal from "../components/Modal.vue";
-import Form from "../components/Form.vue";
-import category from "../json/category.json";
-import initialCategory from "../modals/InitialFormCategory";
-import Table from "../components/Table.vue";
-import Pages from "../components/PagesControl.vue";
-import ButtonCrud from "../components/ButtonCrud.vue";
-import HandleChange from "../helper/HandleChangeHelper";
+import { GetRequest, SendRequest, DeleteRequest } from "../../helper/HttpHelper";
+import { productPath } from "../../constant/PathAPI";
+import ValidateForm from "../../helper/ValidateFormHelper";
+import Modal from "../../components/Modal.vue";
+import Form from "../../components/Form.vue";
+import users from "../../json/users.json";
+import initialProduct from "../../modals/InitialFormProduct"
+import Table from "../../components/Table.vue";
+import Pages from "../../components/PagesControl.vue";
+import ButtonCrud from "../../components/ButtonCrud.vue";
+import HandleChange from "../../helper/HandleChangeHelper";
 export default {
   data() {
     return {
       response: [],
-      form: initialCategory,
+      form: initialProduct,
       isModalOpen: false,
-      arrayForm: category,
+      arrayForm: users,
       isUpdate: false,
     };
   },
   methods: {
     async GetAllUsers() {
       try {
-        this.response = [...(await GetRequest(categoryPath))];
+        this.response = [...(await GetRequest(productPath))];
       } catch (err) {
         console.log(err);
       }
     },
     async handleDelete(id) {
       try {
-        await DeleteRequest(`${categoryPath}/${id}`);
+        await DeleteRequest(`${productPath}/${id}`);
       } catch (err) {
         console.log(err);
       }
@@ -71,7 +73,7 @@ export default {
       }
       this.ErrorForm = false;
       try {
-        await SendRequest(categoryPath, {
+        await SendRequest(productPath, {
           ...form,
         });
       } catch (err) {
@@ -81,7 +83,7 @@ export default {
     },
     async handleUpdate(form) {
       try {
-        await SendRequest(`${categoryPath}/${this.form.id}`, form, "PUT");
+        await SendRequest(`${productPath}/${this.form.id}`, form, "PUT");
       } catch (err) {
         console.log(err);
       }
@@ -95,6 +97,7 @@ export default {
     handleChange(name, value) {
       this.form = HandleChange(this.form, name, value);
     },
+
     openModal() {
       this.isModalOpen = true;
     },

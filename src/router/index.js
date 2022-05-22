@@ -1,7 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "../views/LoginView.vue";
-import UsersView from "../views/UsersView.vue";
-import RegisteView from "../views/RegisterView";
+import LoginView from "../views/global/LoginView.vue";
+import UsersView from "../views/admin/UsersView.vue";
+import RegisterView from "../views/global/RegisterView.vue";
+import ProductView from "../views/admin/ProductView.vue";
+import CategoryView from "../views/admin/CategoryView.vue";
+import PanelAdminView from "../views/admin/PanelAdmin.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -11,24 +14,30 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: "/Users",
-      name: "Users",
-      component: UsersView,
-    },
-    {
       path: "/Register",
       name: "Registrar usuarios",
-      component: RegisteView,
+      component: RegisterView,
     },
     {
-      path: "/Categories",
-      name: "Categorys",
-      component: RegisteView,
-    },
-    {
-      path: "/Products",
-      name: "Products add",
-      component: RegisteView,
+      path: "/dashboard",
+      component: PanelAdminView,
+      children: [
+        {
+          path: "",
+          name: "Users",
+          component: UsersView,
+        },
+        {
+          path: "Categories",
+          name: "Categorys",
+          component: CategoryView,
+        },
+        {
+          path: "Products",
+          name: "Products add",
+          component: ProductView,
+        },
+      ],
     },
   ],
 });

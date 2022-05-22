@@ -49,24 +49,27 @@
         </p>
       </section>
     </section>
-    <img src="../assets/security.svg" alt="login" class="body__background" />
+    <img src="../../assets/security.svg" alt="login" class="body__background" />
   </div>
 </template>
 
 <script>
-import GroupInputVue from "../components/GroupInput.vue";
+import GroupInputVue from "../../components/GroupInput.vue";
 import { RouterLink } from "vue-router";
-import GroupInput from "../components/GroupInput.vue";
-import PathName from "../router/PathName";
-import { GetToken } from "../helper/HttpHelper";
-import { userPath } from "../constant/PathAPI";
-import { setItemToLocalStorage } from "../helper/LocalStorageHelper";
-import ValidateForm from "../helper/ValidateFormHelper";
+import GroupInput from "../../components/GroupInput.vue";
+import { GetToken } from "../../helper/HttpHelper";
+import { userPath } from "../../constant/PathAPI";
+import { setItemToLocalStorage } from "../../helper/LocalStorageHelper";
+import ValidateForm from "../../helper/ValidateFormHelper";
 import router from "@/router";
+import { useTokeStore } from "../../stores/tokeStore";
 
 const initialForm = { email: "", password: "" };
-
 export default {
+  setup(){
+    const token = useTokeStore();
+    return token
+  },
   data() {
     return {
       form: initialForm,
@@ -79,35 +82,37 @@ export default {
   methods: {
     async handleSubmit(e) {
       e.preventDefault();
-      if (!ValidateForm(this.form)) {
-        this.ErrorForm = true;
-        return;
-      }
-      this.ErrorUser = false;
-      this.ErrorForm = false;
-      this.loading = true;
-      let options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(this.form),
-      };
-      try {
-        const datos = await GetToken(`${userPath}/Login`, options);
-        if (datos) {
-          setItemToLocalStorage(datos);
-          this.loading = false;
-          this.login();
-        }
-      } catch (err) {
-        this.ErrorUser = true;
-        this.form = initialForm;
-      }
+      this.login()
+      // if (!ValidateForm(this.form)) {
+      //   this.ErrorForm = true;
+      //   return;
+      // }
+      // this.ErrorUser = false;
+      // this.ErrorForm = false;
+      // this.loading = true;
+      // let options = {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "application/json",
+      //   },
+      //   body: JSON.stringify(this.form),
+      // };
+      // try {
+      //   const datos = await GetToken(`${userPath}/Login`, options);
+      //   if (datos) {
+      //     setItemToLocalStorage(datos);
+      //     this.setToke(datos)
+      //     this.loading = false;
+      //     this.login();
+      //   }
+      // } catch (err) {
+      //   this.ErrorUser = true;
+      //   this.form = initialForm;
+      // }
     },
     login() {
-      router.push({ path: "/Users", replace: true });
+      router.push({ path: "/dashboard"});
     },
 
     handleChange(name, value) {
@@ -120,7 +125,7 @@ export default {
 </script>
 
 <style>
-@import "../styles/loading.css";
+@import "../../styles/loading.css";
 .title {
   position: absolute;
   font-size: 0.9rem;

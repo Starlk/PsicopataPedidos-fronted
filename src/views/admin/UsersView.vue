@@ -29,17 +29,17 @@
   </Modal>
 </template>
 <script>
-import { GetRequest, SendRequest, DeleteRequest } from "../helper/HttpHelper";
-import { userPath } from "../constant/PathAPI";
-import ValidateForm from "../helper/ValidateFormHelper";
-import Modal from "../components/Modal.vue";
-import Form from "../components/Form.vue";
-import users from "../json/users.json";
-import initialForm from "../modals/initialFormUser";
-import Table from "../components/Table.vue";
-import Pages from "../components/PagesControl.vue";
-import ButtonCrud from "../components/ButtonCrud.vue";
-import HandleChange from "../helper/HandleChangeHelper";
+import { GetRequest, SendRequest, DeleteRequest } from "../../helper/HttpHelper";
+import { userPath } from "../../constant/PathAPI";
+import ValidateForm from "../../helper/ValidateFormHelper";
+import Modal from "../../components/Modal.vue";
+import Form from "../../components/Form.vue";
+import users from "../../json/users.json";
+import initialForm from "../../modals/initialFormUser";
+import Table from "../../components/Table.vue";
+import Pages from "../../components/PagesControl.vue";
+import ButtonCrud from "../../components/ButtonCrud.vue";
+import HandleChange from "../../helper/HandleChangeHelper";
 export default {
   data() {
     return {
@@ -107,6 +107,7 @@ export default {
     closeModal() {
       this.isModalOpen = false;
       this.isUpdate = false;
+      this.form = initialForm
     },
   },
   mounted() {
