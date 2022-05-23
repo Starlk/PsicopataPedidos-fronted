@@ -24,16 +24,7 @@
           />
 
           <input type="submit" value="Sign in" class="login__btn" />
-
-          <section class="spinner">
-            <div
-              class="spinner-border loading--absolute"
-              role="status"
-              v-if="loading"
-            >
-              <span class="sr-only"></span>
-            </div>
-          </section>
+          <Loading :loading="loading"/>
         </form>
         <RouterLink to="/Register"></RouterLink>
         <h2 class="login__register">
@@ -65,7 +56,7 @@ import router from "@/router";
 import { useTokeStore } from "../../stores/tokeStore";
 import CreateOptions from "../../helper/CreateOption";
 import jwtDecode from "jwt-decode";
-
+import Loading from "../../components/Loading.vue";
 const initialForm = { email: "", password: "" };
 export default {
   setup() {
@@ -118,7 +109,7 @@ export default {
     },
   },
   computed: {},
-  components: { GroupInputVue, GroupInput },
+  components: { GroupInputVue, GroupInput, Loading },
 };
 </script>
 

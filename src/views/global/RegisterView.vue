@@ -63,12 +63,11 @@
               />
             </section>
           </div>
-
           <section class="col">
             <button class="btn__register" @click="handleSubmit">
               Register
             </button>
-            <RouterLink  to="/" class="text-center">Sign up</RouterLink >
+            <RouterLink to="/" class="text-center">Sign up</RouterLink>
             <p class="text-danger fs-2 text-center">{{ ErrorMessage }}</p>
           </section>
         </div>
@@ -76,7 +75,6 @@
       <section class="col col-12 col-lg-5 col-full-heigth align-self-center">
         <img src="../../assets/Shopping.svg" class="register__img" />
       </section>
-
     </section>
   </section>
 </template>
@@ -128,12 +126,23 @@ export default {
         return;
       }
       this.AlertError(false);
-      try{
-          SendRequest(userPath,this.form)
-      }catch(err){
-          console.log(err)
-          this.AlertError(true,"Failed request")
+      try {
+        SendRequest(userPath, this.form);
+      } catch (err) {
+        console.log(err);
+        this.AlertError(true, "Failed request");
+        this.form = initialForm;
+        return;
       }
+      this.form = initialForm;
+      this.PasswordValidate =""
+      this.$swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "thanks for join us",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     },
     AlertError(isErr = false, mess = "") {
       (this.FormError = isErr), (this.ErrorMessage = mess);
@@ -152,7 +161,6 @@ export default {
   height: 100vh;
   background-color: #0aa1dd;
 }
-
 .btn__register {
   background-color: #0aa1dd;
   border-radius: 5px;
@@ -166,7 +174,6 @@ export default {
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   margin-bottom: 20px;
 }
-
 .register__img {
   max-width: 100%;
 }

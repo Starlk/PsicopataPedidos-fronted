@@ -4,5 +4,6 @@ const userPath = `${MainRoute}/user`;
 
 const productPath = `${MainRoute}/product`;
 const categoryPath = `${MainRoute}/category`;
+const shoppingPath = `${MainRoute}/ShoppingList`;
 
-export { userPath, productPath, categoryPath };
+export { userPath, productPath, categoryPath, shoppingPath };
