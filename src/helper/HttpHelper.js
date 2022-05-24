@@ -28,6 +28,7 @@ const SendRequest = async (endpoint, data, method, token, options = {}) => {
     Authorization: `bearer ${token}`,
   };
   options.body = JSON.stringify(data);
+  const datos = `bearer ${token}`;
   return await HttpRequest(endpoint, options);
 };
 const DeleteRequest = async (endpoint, token, options = {}) => {

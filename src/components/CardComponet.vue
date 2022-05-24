@@ -4,7 +4,7 @@
   <div class="card-body">
     <h5 class="card-title">{{Title}}</h5>
     <p class="card-text">{{Desc}}</p>
-      <button  class="btn btn-primary m-4">{{btnTitle}}</button>
+      <button  class="btn btn-primary m-4" @click="this.$emit('handleClick')">{{btnTitle}}</button>
       <button v-if="isAuthorized" class="btn btn-primary">{{btnSecond}}</button>
   </div>
 </article>

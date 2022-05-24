@@ -6,7 +6,7 @@
         <h1 class="login__title">Welcome Back</h1>
         <p>Welcome back! please enter your details</p>
         <form @submit="handleSubmit">
-          <GroupInput
+           <GroupInput
             Group-label="Enter you email"
             Group-Id="email"
             @handleChange="handleChange"
@@ -14,6 +14,7 @@
             type="text"
             :input="form.email"
           />
+
           <GroupInput
             Group-label="******"
             Group-Id="password"
@@ -91,6 +92,10 @@ export default {
         const datos = await GetToken(`${userPath}/Login`, options);
         if (datos) {
           const values =  Object.values(jwtDecode(datos))
+          //para guardar los datos en el sessionstorage
+          sessionStorage.setItem("token",values)
+          console.log(sessionStorage.getItem("token"))
+
           this.loading = false;
           this.setToke(datos,values[1],values[0]);
           this.login();
