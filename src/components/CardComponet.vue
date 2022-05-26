@@ -6,6 +6,7 @@
     <p class="card-text">{{Desc}}</p>
       <button  class="btn btn-primary m-4" @click="this.$emit('handleClick')">{{btnTitle}}</button>
       <button v-if="isAuthorized" class="btn btn-primary">{{btnSecond}}</button>
+        <slot></slot>
   </div>
 </article>
 </template>

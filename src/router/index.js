@@ -5,6 +5,7 @@ import RegisterView from "../views/global/RegisterView.vue";
 import ProductView from "../views/admin/ProductView.vue";
 import CategoryView from "../views/admin/CategoryView.vue";
 import PanelAdminView from "../views/admin/PanelAdmin.vue";
+import ShoppingList from "../views/client/ShoppingList.vue";
 import { useTokeStore } from "../stores/tokeStore";
 import GeneralProducts from "../views/client/GeneralProducts.vue";
 const isAuthorized = () => {
@@ -37,6 +38,14 @@ const router = createRouter({
           path: "",
           name: "defaultView",
           component: GeneralProducts,
+          beforeEnter() {
+            return isAuth();
+          },
+        },
+        {
+          path: "ShoppingList",
+          name: "ShoppingList",
+          component: ShoppingList,
           beforeEnter() {
             return isAuth();
           },

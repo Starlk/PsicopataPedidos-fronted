@@ -6,9 +6,7 @@
           class="nav-item nav-link"
           v-for="({ name, path }, index) in LinksVisible"
         >
-          <RouterLink :to="path" class="nav-link" >{{
-            name
-          }}</RouterLink>
+          <RouterLink :to="path" class="nav-link">{{ name }}</RouterLink>
         </li>
       </ul>
     </div>
@@ -32,13 +30,29 @@ export default {
   data() {
     return {
       links: [
-        { name: "List Products", path: "/dashboard/", role: Roles.client },
-        { name: "users", path: "/dashboard/Users", role: Roles.admin },
-        { name: "Products", path: "/dashboard/Products", role: Roles.admin },
+        { 
+          name: "List Products", 
+          path: "/dashboard/", 
+          role: Roles.client 
+        },
+        { 
+          name: "users", 
+          path: "/dashboard/Users", 
+          role: Roles.admin 
+          },
+        { 
+          name: "Products", 
+          path: "/dashboard/Products", 
+          role: Roles.admin },
         {
           name: "Categories",
           path: "/dashboard/Categories",
           role: Roles.admin,
+        },
+        { 
+          name: "Carrito", 
+          path: "/dashboard/ShoppingList", 
+          role: Roles.client 
         },
       ],
     };
