@@ -5,7 +5,7 @@
       <section class="login">
         <h1 class="login__title">Welcome Back</h1>
         <p>Welcome back! please enter your details</p>
-        <form @submit="handleSubmit">
+        <form @submit="AuthAzure">
            <GroupInput
             Group-label="Enter you email"
             Group-Id="email"
@@ -49,8 +49,8 @@
 import GroupInputVue from "../../components/GroupInput.vue";
 import { RouterLink } from "vue-router";
 import GroupInput from "../../components/GroupInput.vue";
-import { GetToken } from "../../helper/HttpHelper";
-import { userPath } from "../../constant/PathAPI";
+import { GetToken, GetRequest } from "../../helper/HttpHelper";
+import { productPath, userPath } from "../../constant/PathAPI";
 import { setItemToLocalStorage } from "../../helper/LocalStorageHelper";
 import ValidateForm from "../../helper/ValidateFormHelper";
 import router from "@/router";
@@ -58,6 +58,9 @@ import { useTokeStore } from "../../stores/tokeStore";
 import CreateOptions from "../../helper/CreateOption";
 import jwtDecode from "jwt-decode";
 import Loading from "../../components/Loading.vue";
+import EnvSetting from "../../conf/EnvSetting";
+import {msalInstance}from "./msal";
+
 const initialForm = { email: "", password: "" };
 export default {
   setup() {
@@ -108,6 +111,20 @@ export default {
     handleChange(name, value) {
       this.form = { ...this.form, [name]: value };
     },
+     async AuthAzure(e){
+      e.preventDefault();
+     const datos =  await msalInstance.loginPopup();
+     console.log(datos.accessToken)
+     try{
+      const res = await GetRequest(productPath, datos.accessToken)
+      console.log(res)
+     }catch(e){
+       console.log(e)
+     }
+    }
+  },
+  created(){
+
   },
   computed: {},
   components: { GroupInputVue, GroupInput, Loading },
