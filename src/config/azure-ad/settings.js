@@ -1,4 +1,4 @@
-import Vue from "vue";
+// import Vue from "vue";
 import Envs from "@/config/EnvSettings";
 import Axios from "axios";
 
@@ -19,7 +19,7 @@ const msalConfig = {
 };
 
 const msalInstance = new msal.PublicClientApplication(msalConfig);
-Vue.prototype.$msal = msalInstance;
+// Vue.prototype.$msal = msalInstance;
 
 function CallForLoginOrHandleRedirect(afterLoginSucceded) {
   msalInstance

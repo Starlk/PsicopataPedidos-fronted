@@ -47,19 +47,16 @@
 
 <script>
 import GroupInputVue from "../../components/GroupInput.vue";
-import { RouterLink } from "vue-router";
 import GroupInput from "../../components/GroupInput.vue";
 import { GetToken, GetRequest } from "../../helper/HttpHelper";
-import { productPath, userPath } from "../../constant/PathAPI";
-import { setItemToLocalStorage } from "../../helper/LocalStorageHelper";
+import { userPath } from "../../constant/PathAPI";
 import ValidateForm from "../../helper/ValidateFormHelper";
 import router from "@/router";
 import { useTokeStore } from "../../stores/tokeStore";
 import CreateOptions from "../../helper/CreateOption";
-import jwtDecode from "jwt-decode";
 import Loading from "../../components/Loading.vue";
-import EnvSetting from "../../conf/EnvSetting";
-import {msalInstance}from "./msal";
+import CallForLoginOrHandleRedirect from "../../config/azure-ad/settings";
+
 
 const initialForm = { email: "", password: "" };
 export default {
@@ -113,14 +110,11 @@ export default {
     },
      async AuthAzure(e){
       e.preventDefault();
-     const datos =  await msalInstance.loginPopup();
-     console.log(datos.accessToken)
-     try{
-      const res = await GetRequest(productPath, datos.accessToken)
-      console.log(res)
-     }catch(e){
-       console.log(e)
-     }
+         CallForLoginOrHandleRedirect(this.AutheAzure)
+    },
+    AutheAzure(Auth){
+      sessionStorage.setItem("token",Auth.accessToken);
+      sessionStorage.setItem("ad_username",Auth.account.username);
     }
   },
   created(){
